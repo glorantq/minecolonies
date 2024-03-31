@@ -54,6 +54,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
@@ -712,9 +713,11 @@ public class EventHandler
     public static void onEntityConverted(@NotNull final LivingConversionEvent.Pre event)
     {
         LivingEntity entity = event.getEntity();
-        if (entity instanceof ZombieVillager && event.getOutcome() == EntityType.VILLAGER)
+        final Level world = entity.getCommandSenderWorld();
+
+        if (entity instanceof ZombieVillager && event.getOutcome() == EntityType.VILLAGER
+                && world.getGameRules().getBoolean(MineColonies.ZOMBIE_VILLAGER_CONVERSION))
         {
-            final Level world = entity.getCommandSenderWorld();
             final IColony colony = IColonyManager.getInstance().getIColony(world, entity.blockPosition());
             if (colony != null && colony.hasBuilding("tavern", 1, false))
             {

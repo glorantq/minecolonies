@@ -34,6 +34,7 @@ import com.minecolonies.core.placementhandlers.main.SurvivalHandler;
 import com.minecolonies.core.recipes.FoodIngredient;
 import com.minecolonies.core.recipes.PlantIngredient;
 import com.minecolonies.core.structures.MineColoniesStructures;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -63,6 +64,8 @@ public class MineColonies
     public static final Capability<IChunkmanagerCapability> CHUNK_STORAGE_UPDATE_CAP = CapabilityManager.get(new CapabilityToken<>() {});
 
     public static final Capability<IColonyManagerCapability> COLONY_MANAGER_CAP = CapabilityManager.get(new CapabilityToken<>() {});
+
+    public static GameRules.Key<GameRules.BooleanValue> ZOMBIE_VILLAGER_CONVERSION;
 
     /**
      * The config instance.
@@ -157,6 +160,9 @@ public class MineColonies
 
         event.enqueueWork(ModLootConditions::init);
         event.enqueueWork(ModTags::init);
+
+        ZOMBIE_VILLAGER_CONVERSION = GameRules.register("zombieVillagerToVisitor",
+                GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
     }
 
     @SubscribeEvent
