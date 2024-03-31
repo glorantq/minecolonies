@@ -47,7 +47,7 @@ public class WindowMainPage extends AbstractWindowTownHall
     /**
      * Is the special feature unlocked.
      */
-    private static AtomicBoolean isFeatureUnlocked = new AtomicBoolean(false);
+    private static AtomicBoolean isFeatureUnlocked = new AtomicBoolean(true);
 
     /**
      * Drop down list for style.
@@ -305,34 +305,8 @@ public class WindowMainPage extends AbstractWindowTownHall
         {
             return;
         }
-        final String player = Minecraft.getInstance().player.getStringUUID();
-        new Thread(() -> {
-            try
-            {
-                final SSLSocketFactory sslsocketfactory = HttpsURLConnection.getDefaultSSLSocketFactory();
-                final URL url = new URL("https://auth.minecolonies.com/api/minecraft/" + player + "/features");
-                final HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 
-                conn.setSSLSocketFactory(sslsocketfactory);
-
-                final InputStream responseBody = conn.getInputStream();
-                final BufferedReader reader = new BufferedReader(new InputStreamReader(responseBody));
-
-                String inputLine;
-                final StringBuilder response = new StringBuilder();
-
-                while ((inputLine = reader.readLine()) != null)
-                {
-                    response.append(inputLine);
-                }
-                reader.close();
-                isFeatureUnlocked.set(Boolean.parseBoolean(response.toString()));
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }).start();
+        isFeatureUnlocked.set(true);
     }
 
     /**
